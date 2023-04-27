@@ -6,11 +6,15 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleRegisterUser = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <div className="mt-4 grow flex items-center justify-around">
       <div className="mb-64">
         <h1 className="text-4xl text-center mb-4">Register</h1>
-        <form className="max-w-md mx-auto">
+        <form className="max-w-md mx-auto" onSubmit={handleRegisterUser}>
           <input
             type="text"
             placeholder="John Doe"
