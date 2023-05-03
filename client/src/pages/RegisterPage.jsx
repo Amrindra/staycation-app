@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -8,6 +9,8 @@ const RegisterPage = () => {
 
   const handleRegisterUser = (event) => {
     event.preventDefault();
+
+    axios.get("http://localhost:4000/test");
   };
 
   return (
@@ -33,7 +36,9 @@ const RegisterPage = () => {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
+
           <button className="primary">Register</button>
+
           <div className="text-center py-2 text-gray-500">
             Already have an account?{" "}
             <Link className="underline text-[#F5385D]" to={"/login"}>

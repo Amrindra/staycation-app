@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 function Header() {
   return (
     <header className="flex justify-between">
+      {/* Header Logo Section */}
       <Link to={"/"} className="flex items-center gap-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +21,9 @@ function Header() {
         </svg>
         <span className="font-bold text-xl">airbnb</span>
       </Link>
+      {/*End of Header Logo Section */}
 
+      {/* Header Middle Section */}
       <div className="flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300">
         <div>Anywhere</div>
         <div className="border-l border-gray-300"></div>
@@ -44,7 +47,9 @@ function Header() {
           </svg>
         </button>
       </div>
+      {/* End of Header Logo Section */}
 
+      {/*Side right Header with avartar Section */}
       <Link
         to={"/login"}
         className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 "
@@ -77,8 +82,8 @@ function Header() {
             />
           </svg>
         </div>
-        {/* {!!user && <div>{user.name}</div>} */}
       </Link>
+      {/*End of Side right Header with avartar Section */}
     </header>
   );
 }
