@@ -8,6 +8,7 @@ import axios from "axios";
 
 // Config Defaults. You can specify config defaults that will be applied to every request.
 axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.withCredentials = true;
 
 function App() {
   return (
