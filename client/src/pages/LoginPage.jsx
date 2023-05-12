@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -8,14 +9,17 @@ function LoginPage() {
   const [redirect, setRedirect] = useState(false);
   // const navigate = useNavigate();
 
+  const { setUser } = useContext(UserContext);
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
-      await axios.post("/login", {
+      const response = await axios.post("/login", {
         email,
         password,
       });
+      setUser(response.data);
       alert("Login successful");
       setRedirect(true);
       // navigate("/");

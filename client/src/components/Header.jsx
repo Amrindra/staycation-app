@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 function Header() {
+  const { user } = useContext(UserContext);
   return (
     <header className="flex justify-between">
       {/* Header Logo Section */}
@@ -82,6 +85,9 @@ function Header() {
             />
           </svg>
         </div>
+
+        {/* The double exclamation mark is often used in conditional rendering in React to check if a value exists or not. */}
+        {!!user && <span>{user.name}</span>}
       </Link>
       {/*End of Side right Header with avartar Section */}
     </header>

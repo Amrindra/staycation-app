@@ -1,13 +1,16 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const UserModel = require("./models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
+
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 
@@ -43,19 +46,23 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  const userDocument = await UserModel.findOne({ email });
-  if (userDocument) {
-    const decryptPassword = bcrypt.compareSync(password, userDocument.password);
+  const existingUser = await UserModel.findOne({ email });
+
+  if (existingUser) {
+    const decryptPassword = bcrypt.compareSync(password, existingUser.password);
 
     if (decryptPassword) {
       jwt.sign(
-        { id: userDocument._id, email: userDocument.email },
+        {
+          id: existingUser._id,
+          email: existingUser.email,
+        },
         process.env.JWT_SECRET_KEY,
         {},
+        // Generating cookie for the user when they login
         (error, token) => {
           if (error) throw error;
-
-          res.cookie("token", token).json("Found");
+          res.cookie("token", token).json(existingUser);
         }
       );
     } else {
@@ -63,6 +70,23 @@ app.post("/login", async (req, res) => {
     }
   } else {
     res.status(404).json("not found");
+  }
+});
+
+app.get("/profile", (req, res) => {
+  // Grab cookie token from a user when login by using req.cookies
+  const { token } = req.cookies;
+
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, {}, async (error, user) => {
+      if (error) throw error;
+      // Grab only name, email, and _id
+      const { name, email, _id } = await UserModel.findById(user.id);
+      // Send the request only name, email, and _id to avoid sending password to the client side
+      res.json({ name, email, _id });
+    });
+  } else {
+    res.json(null);
   }
 });
 
