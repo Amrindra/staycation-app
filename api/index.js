@@ -62,6 +62,9 @@ app.post("/login", async (req, res) => {
         // Generating cookie for the user when they login
         (error, token) => {
           if (error) throw error;
+          // The res.cookie() method is used for setting the cookie name to value. The value parameter can be a string or an object converted to JSON.
+          // Syntax
+          // res.cookie( name, value, [options] )
           res.cookie("token", token).json(existingUser);
         }
       );
@@ -88,6 +91,10 @@ app.get("/profile", (req, res) => {
   } else {
     res.json(null);
   }
+});
+
+app.post("/logout", (req, res) => {
+  res.cookie("token", "").json(true);
 });
 
 app.listen(4000);

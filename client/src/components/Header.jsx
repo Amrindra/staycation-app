@@ -4,6 +4,7 @@ import { UserContext } from "../context/UserContext";
 
 function Header() {
   const { user } = useContext(UserContext);
+
   return (
     <header className="flex justify-between">
       {/* Header Logo Section */}
@@ -54,7 +55,7 @@ function Header() {
 
       {/*Side right Header with avartar Section */}
       <Link
-        to={"/login"}
+        to={user ? "/account" : "/login"}
         className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 "
       >
         <svg
