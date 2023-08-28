@@ -5,12 +5,14 @@ const mongoose = require("mongoose");
 const UserModel = require("./models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const imageDownloader = require("image-downloader");
 
 require("dotenv").config();
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static(__dirname + "/uploads"));
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 
@@ -91,6 +93,17 @@ app.get("/profile", (req, res) => {
   } else {
     res.json(null);
   }
+});
+
+app.post("/upload-by-link", async (req, res) => {
+  const { link } = req.body;
+  const newName = "photo" + Date.now() + ".jpg";
+  await imageDownloader.image({
+    url: link,
+    dest: __dirname + "/uploads/" + newName,
+  });
+
+  res.json(newName);
 });
 
 app.post("/logout", (req, res) => {

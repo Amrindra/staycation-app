@@ -6,7 +6,7 @@ import PlacesPage from "./PlacePage";
 
 const UserProfilePage = () => {
   const [redirectToHomepage, setRedirectToHomepage] = useState(null);
-  const { user, loading, setUser } = useContext(UserContext);
+  const { loading, user, setUser } = useContext(UserContext);
 
   // Using useParams to grab the subpage params from the App.jsx
   let { subpage } = useParams();

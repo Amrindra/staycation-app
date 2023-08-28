@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import PerksSection from "../components/PerksSection";
+import axios from "axios";
 
 const PlacesPage = () => {
   const { action } = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [addPhotos, setAddPhotos] = useState([]);
+  const [photoLink, setPhotoLink] = useState([]);
   const [description, setDescription] = useState("");
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
@@ -31,6 +33,47 @@ const PlacesPage = () => {
       </>
     );
   }
+
+  // Add photo Function
+  async function handleAddPhotoByLink(event) {
+    event.preventDefault();
+    // Extracting the filename from the image link
+    const { data: filename } = await axios.post("/upload-by-link", {
+      link: photoLink,
+    });
+
+    // Returning the previous value and the new file name
+    // Calling setAddPhotos in this case is to get the upload picture to be shown on the frontend
+    setAddPhotos((prev) => {
+      return [...prev, filename];
+    });
+
+    setPhotoLink("");
+  }
+
+  // Upload Photos function
+  const handleUploadPhoto = (event) => {
+    const files = event.target.files;
+    const data = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+      data.append("images", files[i]);
+    }
+
+    axios
+      .post("/upload", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((response) => {
+        const { data: filename } = response;
+        setAddPhotos((prev) => {
+          return [...prev, filename];
+        });
+        // console.log(data);
+      });
+
+    console.log(data);
+  };
 
   return (
     <div>
@@ -66,7 +109,7 @@ const PlacesPage = () => {
               name="title"
               placeholder="EX: My cozy gateaway"
               value={title}
-              onChange={setTitle((event) => event.target.vaule)}
+              onChange={(event) => setTitle(event.target.value)}
             />
 
             {inputInfo("Address", "Address to this place")}
@@ -75,25 +118,51 @@ const PlacesPage = () => {
               name="address"
               placeholder="EX: 123 Happy street"
               value={address}
-              onClick={setAddress((event) => event.target.value)}
+              onChange={(event) => setAddress(event.target.value)}
             />
 
-            {inputInfo("Photos", "more = better")}
+            {inputInfo("Photos", "The more the sbetter")}
             <div className="flex gap-2">
               <input
                 type="text"
-                name="photo"
+                name="photoLink"
                 placeholder="jpg, png...."
-                value={addPhotos}
-                onClick={(event) => event.target.value}
+                required
+                value={photoLink}
+                onChange={(event) => setPhotoLink(event.target.value)}
               />
-              <button className="bg-gray-200 px-4 rounded-2xl">
+              <button
+                disabled={!photoLink.length > 0}
+                className={`bg-gray-200 px-4 rounded-2xl ${
+                  !photoLink.length &&
+                  "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
+                onClick={handleAddPhotoByLink}
+              >
                 Add&nbsp;Photo
               </button>
             </div>
 
-            <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-              <button className="flex justify-center items-center gap-1 border bg-transparent rounded-2xl p-8 text-2xl text-gray-600">
+            {/* Upload photo button section */}
+            <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+              {addPhotos.length > 0 &&
+                addPhotos.map((link) => (
+                  <div key={link}>
+                    <img
+                      src={"http://localhost:4000/uploads/" + link}
+                      alt="photo upload"
+                      className="rounded-2xl"
+                    />
+                  </div>
+                ))}
+
+              <label className="cursor-pointer flex justify-center items-center gap-1 border bg-transparent rounded-2xl p-8 text-2xl text-gray-600">
+                <input
+                  type="file"
+                  multiple
+                  className="hidden"
+                  onChange={handleUploadPhoto}
+                />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -109,11 +178,14 @@ const PlacesPage = () => {
                   />
                 </svg>
                 Upload
-              </button>
+              </label>
             </div>
 
-            {inputInfo("Description", "description of the place")}
-            <textarea />
+            {inputInfo("Description", "Dsescription of the place")}
+            <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+            />
 
             {inputInfo("Perks", "select all the perks of your place")}
             <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
@@ -122,30 +194,50 @@ const PlacesPage = () => {
 
             {inputInfo("Extra info", "House rules, etc")}
             <textarea
-              value={description}
-              onClick={setDescription((event) => event.target.value)}
+              value={extraInfo}
+              onChange={(event) => setExtraInfo(event.target.value)}
             />
 
             <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
               <div>
                 <h3 className="mt-2 -mb-1">Check in time</h3>
-                <input type="text" placeholder="14" />
+                <input
+                  type="text"
+                  placeholder="3 PM"
+                  value={checkIn}
+                  onChange={(event) => setCheckIn(event.target.value)}
+                />
               </div>
               <div>
                 <h3 className="mt-2 -mb-1">Check out time</h3>
-                <input type="text" placeholder="11" />
+                <input
+                  type="text"
+                  placeholder="12 AM"
+                  value={checkOut}
+                  onChange={(event) => setCheckOut(event.target.value)}
+                />
               </div>
               <div>
                 <h3 className="mt-2 -mb-1">Max number of guests</h3>
-                <input type="number" />
+                <input
+                  type="number"
+                  value={maxGuests}
+                  onChange={(event) => setMaxGuests(event.target.value)}
+                />
               </div>
               <div>
                 <h3 className="mt-2 -mb-1">Price per night</h3>
-                <input type="number" />
+                <input
+                  type="number"
+                  value={price}
+                  onChange={(event) => setPrice(event.target.value)}
+                />
               </div>
             </div>
 
-            <button className="primary my-4">Save</button>
+            <button type="submit" className="primary my-4">
+              Save
+            </button>
           </form>
         </div>
       )}
