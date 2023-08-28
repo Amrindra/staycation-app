@@ -135,7 +135,7 @@ app.post("/upload", photoMiddleWare.array("images", 50), (req, res) => {
     const newPath = path + "." + onlyOriginalnameExtension;
     // Using fs to rename the path name. path is an old path and newPath is the new path name
     fs.renameSync(path, newPath);
-    uploadFiles.push(newPath);
+    uploadFiles.push(newPath.replace("uploads/", ""));
   }
   res.json(uploadFiles);
 });
