@@ -56,7 +56,7 @@ const PlacesPage = () => {
     const files = event.target.files;
     const data = new FormData();
 
-    for (let i = 0; i < files.length; i++) {
+    for (let i in files) {
       data.append("images", files[i]);
     }
 
