@@ -6,6 +6,7 @@ const UserModel = require("./models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const imageDownloader = require("image-downloader");
+const multer = require("multer");
 
 require("dotenv").config();
 
@@ -104,6 +105,13 @@ app.post("/upload-by-link", async (req, res) => {
   });
 
   res.json(newName);
+});
+
+// Using Multer library for uploading images from local computer
+const photoMiddleWare = multer({ dest: "uploads/" });
+app.post("/upload", photoMiddleWare.array("images", 50), (req, res) => {
+  console.log(req.files);
+  res.json(req.files);
 });
 
 app.post("/logout", (req, res) => {
