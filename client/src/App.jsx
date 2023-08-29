@@ -6,6 +6,8 @@ import Layout from "./components/Layout";
 import RegisterPage from "./pages/RegisterPage";
 import axios from "axios";
 import UserProfilePage from "./pages/UserProfilePage";
+import PlacesPage from "./pages/PlacePage";
+import PlacesFormPage from "./pages/PlacesFormPage";
 
 // Config Defaults. You can specify config defaults that will be applied to every request.
 axios.defaults.baseURL = "http://localhost:4000";
@@ -18,8 +20,9 @@ function App() {
         <Route index element={<IndexPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/account/:subpage?" element={<UserProfilePage />} />
-        <Route path="/account/:subpage/:action" element={<UserProfilePage />} />
+        <Route path="/account" element={<UserProfilePage />} />
+        <Route path="/account/places" element={<PlacesPage />} />
+        <Route path="/account/places/new" element={<PlacesFormPage />} />
       </Route>
     </Routes>
   );

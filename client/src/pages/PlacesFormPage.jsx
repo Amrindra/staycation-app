@@ -1,8 +1,9 @@
 import { useState } from "react";
-import ImageUploader from "./ImageUploader";
-import PerksSection from "./PerksSection";
+import ImageUploader from "../components/ImageUploader";
+import PerksSection from "../components/PerksSection";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ProfileNavigation from "../components/ProfileNavigation";
 
 const PlacesForm = () => {
   const [title, setTitle] = useState("");
@@ -15,7 +16,6 @@ const PlacesForm = () => {
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
   const [price, setPrice] = useState(100);
-  const [redirect, setRedirect] = useState("");
 
   const navigate = useNavigate();
 
@@ -51,15 +51,13 @@ const PlacesForm = () => {
     };
 
     await axios.post("/places", placeData);
-    // setRedirect("/account/places");
-    navigate("/account/new");
+    navigate("/account/places");
   }
 
-  // if (redirect) {
-  //   return <Navigate to={redirect} />;
-  // }
   return (
     <div>
+      <ProfileNavigation />
+
       <form onSubmit={handleSubmit}>
         {inputInfo("Title", "Title for your place.")}
         <input
