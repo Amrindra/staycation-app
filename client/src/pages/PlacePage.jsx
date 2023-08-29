@@ -1,7 +1,17 @@
 import { Link } from "react-router-dom";
 import ProfileNavigation from "../components/ProfileNavigation";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const PlacesPage = () => {
+  const [places, setPlaces] = useState([]);
+
+  useEffect(() => {
+    axios.get("/places").then(({ data }) => {
+      setPlaces(data);
+    });
+  }, []);
+
   return (
     <div>
       <ProfileNavigation />
@@ -26,12 +36,6 @@ const PlacesPage = () => {
           Add new place
         </Link>
       </div>
-
-      {/* {action === "new" && (
-        <div className="">
-          <PlacesForm />
-        </div>
-      )} */}
     </div>
   );
 };

@@ -68,7 +68,6 @@ app.post("/login", async (req, res) => {
         (error, token) => {
           if (error) throw error;
           // The res.cookie() method is used for setting the cookie name to value. The value parameter can be a string or an object converted to JSON.
-          // Syntax
           // res.cookie( name, value, [options] )
           res.cookie("token", token).json(existingUser);
         }
@@ -141,6 +140,7 @@ app.post("/upload", photoMiddleWare.array("images", 50), (req, res) => {
 }*/
 });
 
+// Post request for places
 app.post("/places", (req, res) => {
   const { token } = req.cookies;
   const {
@@ -170,6 +170,17 @@ app.post("/places", (req, res) => {
       maxGuests,
     });
     res.json(placeDocument);
+  });
+});
+
+// Get request for Places endpoint
+app.get("/places", (req, res) => {
+  const { token } = req.cookies;
+
+  jwt.verify(token, process.env.JWT_SECRET_KEY, {}, async (error, userData) => {
+    const { id } = userData;
+
+    res.json(await PlaceModel.find({ owner: id }));
   });
 });
 
