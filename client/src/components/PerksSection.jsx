@@ -1,8 +1,23 @@
-const PerksSection = () => {
+/* eslint-disable react/prop-types */
+const PerksSection = ({ selectedPerk, onChange }) => {
+  const handleCheckBox = (event) => {
+    const { checked, name } = event.target;
+
+    if (checked) {
+      // To handle check box when it's checked
+      onChange([...selectedPerk, name]);
+    } else {
+      // To handle check box when it is unchecked
+      onChange([
+        ...selectedPerk.filter((selectedName) => selectedName !== name),
+      ]);
+    }
+  };
+
   return (
     <>
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="wifi" />
+        <input type="checkbox" name="wifi" onChange={handleCheckBox} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -21,7 +36,7 @@ const PerksSection = () => {
       </label>
 
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="wifi" />
+        <input type="checkbox" name="parking" onChange={handleCheckBox} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -40,7 +55,7 @@ const PerksSection = () => {
       </label>
 
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="wifi" />
+        <input type="checkbox" name="tv" onChange={handleCheckBox} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -59,7 +74,7 @@ const PerksSection = () => {
       </label>
 
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="wifi" />
+        <input type="checkbox" name="radio" onChange={handleCheckBox} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -78,7 +93,7 @@ const PerksSection = () => {
       </label>
 
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="wifi" />
+        <input type="checkbox" name="pets" onChange={handleCheckBox} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -97,7 +112,7 @@ const PerksSection = () => {
       </label>
 
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="wifi" />
+        <input type="checkbox" name="entrance" onChange={handleCheckBox} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
