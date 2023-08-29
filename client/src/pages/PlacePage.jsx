@@ -51,7 +51,7 @@ const PlacesPage = () => {
     setPhotoLink("");
   }
 
-  // Upload Photos function
+  // Upload Photos function from the local computer
   const handleUploadPhoto = (event) => {
     const files = event.target.files;
     const data = new FormData();
@@ -65,9 +65,9 @@ const PlacesPage = () => {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
-        const { data: filename } = response;
+        const { data: filenames } = response;
         setAddPhotos((prev) => {
-          return [...prev, filename];
+          return [...prev, ...filenames];
         });
         // console.log(data);
       });
@@ -111,7 +111,6 @@ const PlacesPage = () => {
               value={title}
               onChange={(event) => setTitle(event.target.value)}
             />
-
             {inputInfo("Address", "Address to this place")}
             <input
               type="text"
@@ -120,7 +119,6 @@ const PlacesPage = () => {
               value={address}
               onChange={(event) => setAddress(event.target.value)}
             />
-
             {inputInfo("Photos", "The more the sbetter")}
             <div className="flex gap-2">
               <input
@@ -145,13 +143,14 @@ const PlacesPage = () => {
 
             {/* Upload photo button section */}
             <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+              {/* Only show when there is a image */}
               {addPhotos.length > 0 &&
                 addPhotos.map((link) => (
                   <div key={link}>
                     <img
                       src={"http://localhost:4000/uploads/" + link}
                       alt="photo upload"
-                      className="rounded-2xl"
+                      className="w-full object-cover rounded-2xl"
                     />
                   </div>
                 ))}
@@ -180,24 +179,22 @@ const PlacesPage = () => {
                 Upload
               </label>
             </div>
+            {/*End of upload section */}
 
             {inputInfo("Description", "Dsescription of the place")}
             <textarea
               value={description}
               onChange={(event) => setDescription(event.target.value)}
             />
-
             {inputInfo("Perks", "select all the perks of your place")}
             <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
               <PerksSection />
             </div>
-
             {inputInfo("Extra info", "House rules, etc")}
             <textarea
               value={extraInfo}
               onChange={(event) => setExtraInfo(event.target.value)}
             />
-
             <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
               <div>
                 <h3 className="mt-2 -mb-1">Check in time</h3>
@@ -234,7 +231,6 @@ const PlacesPage = () => {
                 />
               </div>
             </div>
-
             <button type="submit" className="primary my-4">
               Save
             </button>

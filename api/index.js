@@ -108,17 +108,6 @@ app.post("/upload-by-link", async (req, res) => {
   res.json(newName);
 });
 
-// THE SAMEPLE OF THE originalname.
-/*{
-  fieldname: 'images',
-  originalname: 'photo1693233892848.jpg',
-  encoding: '7bit',
-  mimetype: 'image/jpeg',
-  destination: 'uploads/',
-  filename: 'aa51456b18b6b77db2432c3ad1528fc0',
-  path: 'uploads/aa51456b18b6b77db2432c3ad1528fc0',
-  size: 38401
-}*/
 // Using Multer library for uploading images from local computer
 // This is where we will upload our file to
 const photoMiddleWare = multer({ dest: "uploads/" });
@@ -138,6 +127,17 @@ app.post("/upload", photoMiddleWare.array("images", 50), (req, res) => {
     uploadFiles.push(newPath.replace("uploads/", ""));
   }
   res.json(uploadFiles);
+  // THE SAMEPLE OF THE originalname.
+  /*{
+  fieldname: 'images',
+  originalname: 'photo1693233892848.jpg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: 'uploads/',
+  filename: 'aa51456b18b6b77db2432c3ad1528fc0',
+  path: 'uploads/aa51456b18b6b77db2432c3ad1528fc0',
+  size: 38401
+}*/
 });
 
 app.post("/logout", (req, res) => {
