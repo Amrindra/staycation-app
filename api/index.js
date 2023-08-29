@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
 const fs = require("fs");
+const PlaceModel = require("./models/Place");
 
 require("dotenv").config();
 
@@ -138,6 +139,38 @@ app.post("/upload", photoMiddleWare.array("images", 50), (req, res) => {
   path: 'uploads/aa51456b18b6b77db2432c3ad1528fc0',
   size: 38401
 }*/
+});
+
+app.post("/places", (req, res) => {
+  const { token } = req.cookies;
+  const {
+    title,
+    address,
+    photos,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkout,
+    maxGuests,
+  } = req.body;
+
+  jwt.verify(token, process.env.JWT_SECRET_KEY, {}, async (error, userData) => {
+    if (error) throw error;
+    const placeDocument = await PlaceModel.create({
+      owner: userData.id,
+      title,
+      address,
+      photos,
+      description,
+      perks,
+      extraInfo,
+      checkIn,
+      checkout,
+      maxGuests,
+    });
+    res.json(placeDocument);
+  });
 });
 
 app.post("/logout", (req, res) => {

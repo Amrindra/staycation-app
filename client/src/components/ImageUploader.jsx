@@ -43,7 +43,7 @@ const ImageUploader = ({ addPhotos, setAddPhotos }) => {
         // console.log(data);
       });
 
-    console.log(data);
+    // console.log(data);
   };
 
   return (
@@ -53,7 +53,6 @@ const ImageUploader = ({ addPhotos, setAddPhotos }) => {
           type="text"
           name="photoLink"
           placeholder="jpg, png...."
-          required
           value={photoLink}
           onChange={(event) => setPhotoLink(event.target.value)}
         />

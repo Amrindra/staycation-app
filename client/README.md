@@ -1,2 +1,3 @@
-# Airbnb-clone
-Personal Project for the educational purposes only. Tech Stack MERN with tailwindcss for the style
+# Vite Permission denied
+/client/node_modules/.bin/vite: Permission denied.
+To solve it: sudo chmod +x node_modules/.bin/vite
