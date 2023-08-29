@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import PerksSection from "../components/PerksSection";
 import ImageUploader from "../components/ImageUploader";
+import axios from "axios";
 
 const PlacesPage = () => {
   const { action } = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
+  const [addPhotos, setAddPhotos] = useState([]);
   const [description, setDescription] = useState("");
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
@@ -14,7 +16,7 @@ const PlacesPage = () => {
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
   const [price, setPrice] = useState(100);
-  const [addPhotos, setAddPhotos] = useState([]);
+  const [redirect, setRedirect] = useState("");
 
   function inputHeader(text) {
     return <label className="text-2xl mt-4">{text}</label>;
@@ -30,6 +32,29 @@ const PlacesPage = () => {
         {inputDescription(description)}
       </>
     );
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const placeData = {
+      title,
+      address,
+      addPhotos,
+      description,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+      price,
+    };
+
+    await axios.post("/places", placeData);
+    setRedirect("/account/places");
+  }
+
+  if (redirect) {
+    return <Navigate to={redirect} />;
   }
 
   return (
@@ -59,7 +84,7 @@ const PlacesPage = () => {
 
       {action === "new" && (
         <div className="">
-          <form>
+          <form onSubmit={handleSubmit}>
             {inputInfo("Title", "Title for your place.")}
             <input
               type="text"
