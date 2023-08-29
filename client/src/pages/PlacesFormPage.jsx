@@ -8,7 +8,7 @@ import ProfileNavigation from "../components/ProfileNavigation";
 const PlacesForm = () => {
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
-  const [addPhotos, setAddPhotos] = useState([]);
+  const [photos, setPhotos] = useState([]);
   const [description, setDescription] = useState("");
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
@@ -40,7 +40,7 @@ const PlacesForm = () => {
     const placeData = {
       title,
       address,
-      addPhotos,
+      photos,
       description,
       perks,
       extraInfo,
@@ -78,7 +78,7 @@ const PlacesForm = () => {
 
         {/* Image uploader section */}
         {inputInfo("Photos", "The more the better")}
-        <ImageUploader addPhotos={addPhotos} setAddPhotos={setAddPhotos} />
+        <ImageUploader photos={photos} setPhotos={setPhotos} />
 
         {inputInfo("Description", "Dsescription of the place")}
         <textarea

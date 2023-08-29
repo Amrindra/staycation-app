@@ -36,6 +36,11 @@ const PlacesPage = () => {
           Add new place
         </Link>
       </div>
+
+      <div>
+        {places.length > 0 &&
+          places.map((place) => <div key={place._id}>{place.title}</div>)}
+      </div>
     </div>
   );
 };

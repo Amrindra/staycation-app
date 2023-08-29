@@ -2,24 +2,24 @@
 import axios from "axios";
 import { useState } from "react";
 
-const ImageUploader = ({ addPhotos, setAddPhotos }) => {
-  const [photoLink, setPhotoLink] = useState([]);
+const ImageUploader = ({ photos, setPhotos }) => {
+  const [photoByLink, setByPhotoLink] = useState([]);
 
   // Add photo Function
   async function handleAddPhotoByLink(event) {
     event.preventDefault();
     // Extracting the filename from the image link
     const { data: filename } = await axios.post("/upload-by-link", {
-      link: photoLink,
+      link: photoByLink,
     });
 
     // Returning the previous value and the new file name
     // Calling setAddPhotos in this case is to get the upload picture to be shown on the frontend
-    setAddPhotos((prev) => {
+    setPhotos((prev) => {
       return [...prev, filename];
     });
 
-    setPhotoLink("");
+    setByPhotoLink("");
   }
 
   // Upload Photos function from the local computer
@@ -37,7 +37,7 @@ const ImageUploader = ({ addPhotos, setAddPhotos }) => {
       })
       .then((response) => {
         const { data: filenames } = response;
-        setAddPhotos((prev) => {
+        setPhotos((prev) => {
           return [...prev, ...filenames];
         });
         // console.log(data);
@@ -53,13 +53,14 @@ const ImageUploader = ({ addPhotos, setAddPhotos }) => {
           type="text"
           name="photoLink"
           placeholder="jpg, png...."
-          value={photoLink}
-          onChange={(event) => setPhotoLink(event.target.value)}
+          value={photoByLink}
+          onChange={(event) => setByPhotoLink(event.target.value)}
         />
         <button
-          disabled={!photoLink.length > 0}
+          disabled={!photoByLink.length > 0}
           className={`bg-gray-200 px-4 rounded-2xl ${
-            !photoLink.length && "bg-gray-300 text-gray-500 cursor-not-allowed"
+            !photoByLink.length &&
+            "bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}
           onClick={handleAddPhotoByLink}
         >
@@ -70,8 +71,8 @@ const ImageUploader = ({ addPhotos, setAddPhotos }) => {
       {/* Upload photo button section */}
       <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {/* Only show when there is a image */}
-        {addPhotos.length > 0 &&
-          addPhotos.map((link) => (
+        {photos.length > 0 &&
+          photos.map((link) => (
             <div key={link} className="h-32 flex">
               <img
                 src={"http://localhost:4000/uploads/" + link}
