@@ -75,7 +75,7 @@ const ImageUploader = ({ photos, setPhotos }) => {
           photos.map((link) => (
             <div key={link} className="h-32 flex">
               <img
-                src={"http://localhost:4000/uploads/" + link}
+                src={"http://localhost:8000/uploads/" + link}
                 alt="photo upload"
                 className="w-full object-cover rounded-2xl"
               />

@@ -10,7 +10,7 @@ import PlacesPage from "./pages/PlacePage";
 import PlacesFormPage from "./pages/PlacesFormPage";
 
 // Config Defaults. You can specify config defaults that will be applied to every request.
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
         <Route path="/account" element={<UserProfilePage />} />
         <Route path="/account/places" element={<PlacesPage />} />
         <Route path="/account/places/new" element={<PlacesFormPage />} />
+        <Route path="/account/places/:id" element={<PlacesFormPage />} />
       </Route>
     </Routes>
   );

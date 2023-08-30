@@ -17,7 +17,12 @@ const PerksSection = ({ selectedPerk, onChange }) => {
   return (
     <>
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="wifi" onChange={handleCheckBox} />
+        <input
+          type="checkbox"
+          checked={selectedPerk.includes("wifi")}
+          name="wifi"
+          onChange={handleCheckBox}
+        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -36,7 +41,12 @@ const PerksSection = ({ selectedPerk, onChange }) => {
       </label>
 
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="parking" onChange={handleCheckBox} />
+        <input
+          type="checkbox"
+          checked={selectedPerk.includes("parking")}
+          name="parking"
+          onChange={handleCheckBox}
+        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -55,7 +65,12 @@ const PerksSection = ({ selectedPerk, onChange }) => {
       </label>
 
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="tv" onChange={handleCheckBox} />
+        <input
+          type="checkbox"
+          checked={selectedPerk.includes("tv")}
+          name="tv"
+          onChange={handleCheckBox}
+        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -74,7 +89,12 @@ const PerksSection = ({ selectedPerk, onChange }) => {
       </label>
 
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="radio" onChange={handleCheckBox} />
+        <input
+          type="checkbox"
+          checked={selectedPerk.includes("radio")}
+          name="radio"
+          onChange={handleCheckBox}
+        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -93,7 +113,12 @@ const PerksSection = ({ selectedPerk, onChange }) => {
       </label>
 
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="pets" onChange={handleCheckBox} />
+        <input
+          type="checkbox"
+          checked={selectedPerk.includes("pets")}
+          name="pets"
+          onChange={handleCheckBox}
+        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -112,7 +137,12 @@ const PerksSection = ({ selectedPerk, onChange }) => {
       </label>
 
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="entrance" onChange={handleCheckBox} />
+        <input
+          type="checkbox"
+          checked={selectedPerk.includes("entrance")}
+          name="entrance"
+          onChange={handleCheckBox}
+        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

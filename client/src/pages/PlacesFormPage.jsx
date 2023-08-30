@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageUploader from "../components/ImageUploader";
 import PerksSection from "../components/PerksSection";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import ProfileNavigation from "../components/ProfileNavigation";
 
@@ -17,8 +17,31 @@ const PlacesForm = () => {
   const [maxGuests, setMaxGuests] = useState(1);
   const [price, setPrice] = useState(100);
 
+  const { id } = useParams();
   const navigate = useNavigate();
 
+  // For editing the or update the places form input
+  // This useEffect will run when a user clicks on the my accommodations with their id being passed on
+  useEffect(() => {
+    if (!id) return;
+
+    axios.get(`/places/${id}`).then((response) => {
+      const { data } = response;
+
+      setTitle(data.title);
+      setAddress(data.address);
+      setPhotos(data.photos);
+      setDescription(data.description);
+      setPerks(data.perks);
+      setExtraInfo(data.extraInfo);
+      setCheckIn(data.checkIn);
+      setCheckOut(data.checkOut);
+      setMaxGuests(data.maxGuests);
+      setPrice(data.price);
+    });
+  }, [id]);
+
+  // For Header Text section
   function inputHeader(text) {
     return <label className="text-2xl mt-4">{text}</label>;
   }
@@ -37,6 +60,7 @@ const PlacesForm = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
+
     const placeData = {
       title,
       address,
@@ -50,8 +74,17 @@ const PlacesForm = () => {
       price,
     };
 
-    await axios.post("/places", placeData);
-    navigate("/account/places");
+    // Using id to verify if we should update existing data or save the new data from the form input
+    // If the id exist update the existing data otherwise create new ones
+    if (id) {
+      // Updating the existing data
+      await axios.put("/places", { id, ...placeData });
+      navigate("/account/places");
+    } else {
+      // Create the new places data to the database
+      await axios.post("/places", placeData);
+      navigate("/account/places");
+    }
   }
 
   return (

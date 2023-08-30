@@ -151,7 +151,7 @@ app.post("/places", (req, res) => {
     perks,
     extraInfo,
     checkIn,
-    checkout,
+    checkOut,
     maxGuests,
   } = req.body;
 
@@ -166,7 +166,7 @@ app.post("/places", (req, res) => {
       perks,
       extraInfo,
       checkIn,
-      checkout,
+      checkOut,
       maxGuests,
     });
     res.json(placeDocument);
@@ -184,8 +184,54 @@ app.get("/places", (req, res) => {
   });
 });
 
+// Get places by ID
+app.get("/places/:id", async (req, res) => {
+  const { id } = req.params;
+
+  res.json(await PlaceModel.findById(id));
+});
+
+// Update places by id
+app.put("/places", async (req, res) => {
+  const { token } = req.cookies;
+  const {
+    id,
+    title,
+    address,
+    photos,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+  } = req.body;
+
+  jwt.verify(token, process.env.JWT_SECRET_KEY, {}, async (error, userData) => {
+    const placeDocument = await PlaceModel.findById(id);
+
+    if (error) throw error;
+    // Checking the current login user is the same as the owner user
+    if (userData.id === placeDocument.owner.toString()) {
+      placeDocument.set({
+        title,
+        address,
+        photos,
+        description,
+        perks,
+        extraInfo,
+        checkIn,
+        checkOut,
+        maxGuests,
+      });
+      await placeDocument.save();
+      res.json("Ok");
+    }
+  });
+});
+
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json(true);
 });
 
-app.listen(4000);
+app.listen(8000);
