@@ -48,7 +48,18 @@ const ImageUploader = ({ photos, setPhotos }) => {
     setPhotos([...photos.filter((photo) => photo !== removePhotoLink)]);
   };
 
-  const handleSetAsMainPhoto = () => {};
+  // This function is used to select image and set as a main photo
+  const handleSetAsMainPhoto = (event, selectedPhotoLink) => {
+    event.preventDefault();
+
+    // Filtering out all of photos in the array and keep only one that is selected
+    const selectedPhoto = [
+      selectedPhotoLink,
+      ...photos.filter((photo) => photo !== selectedPhotoLink),
+    ];
+
+    setPhotos(selectedPhoto);
+  };
 
   return (
     <div>
@@ -85,7 +96,7 @@ const ImageUploader = ({ photos, setPhotos }) => {
               />
 
               <button
-                onClick={() => handleSetAsMainPhoto(link)}
+                onClick={(event) => handleSetAsMainPhoto(event, link)}
                 className="absolute left-1 text-white bg-black bg-opacity-50 rounded-xl p-2 px-2 cursor-pointer"
               >
                 {/* Checking if the link is the same as the link of set a main photo */}
@@ -117,7 +128,7 @@ const ImageUploader = ({ photos, setPhotos }) => {
               </button>
 
               <button
-                onClick={() => handleRemovePhoto(link)}
+                onClick={(event) => handleRemovePhoto(event, link)}
                 className="absolute bottom-2 right-1 text-white bg-black bg-opacity-50 rounded-xl p-2 px-2 cursor-pointer"
               >
                 <svg
