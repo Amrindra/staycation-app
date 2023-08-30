@@ -7,7 +7,7 @@ const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    axios.get("/places").then(({ data }) => {
+    axios.get("/user-places").then(({ data }) => {
       setPlaces(data);
     });
   }, []);
@@ -43,7 +43,7 @@ const PlacesPage = () => {
             <Link
               to={`/account/places/${place._id}`}
               key={place._id}
-              className="flex gap-4 bg-gray-100 p-4 rounded-2xl cursor-pointer"
+              className="flex gap-4 bg-gray-100 p-4 rounded-2xl cursor-pointer mt-4"
             >
               <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
                 {place.photos.length > 0 && (

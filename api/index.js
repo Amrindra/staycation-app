@@ -173,8 +173,8 @@ app.post("/places", (req, res) => {
   });
 });
 
-// Get request for Places endpoint
-app.get("/places", (req, res) => {
+// Get request for Places endpoint for a particular user
+app.get("/user-places", (req, res) => {
   const { token } = req.cookies;
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, {}, async (error, userData) => {
@@ -183,6 +183,9 @@ app.get("/places", (req, res) => {
     res.json(await PlaceModel.find({ owner: id }));
   });
 });
+
+// Get request for all user
+app.get("/places", async (req, res) => [res.json(await PlaceModel.find())]);
 
 // Get places by ID
 app.get("/places/:id", async (req, res) => {
