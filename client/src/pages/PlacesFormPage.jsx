@@ -100,6 +100,7 @@ const PlacesForm = () => {
           value={title}
           onChange={(event) => setTitle(event.target.value)}
         />
+
         {inputInfo("Address", "Address to this place")}
         <input
           type="text"

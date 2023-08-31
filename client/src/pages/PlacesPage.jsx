@@ -11,7 +11,7 @@ const PlacesPage = () => {
       setPlaces(data);
     });
   }, []);
-
+  console.log(places);
   return (
     <div>
       <ProfileNavigation />

@@ -44,7 +44,8 @@ const ImageUploader = ({ photos, setPhotos }) => {
     // console.log(data);
   };
 
-  const handleRemovePhoto = (removePhotoLink) => {
+  const handleRemovePhoto = (event, removePhotoLink) => {
+    event.preventDefault();
     setPhotos([...photos.filter((photo) => photo !== removePhotoLink)]);
   };
 
@@ -62,7 +63,7 @@ const ImageUploader = ({ photos, setPhotos }) => {
   };
 
   return (
-    <div>
+    <>
       <div className="flex gap-2">
         <input
           type="text"
@@ -173,7 +174,7 @@ const ImageUploader = ({ photos, setPhotos }) => {
           Upload
         </label>
       </div>
-    </div>
+    </>
   );
 };
 

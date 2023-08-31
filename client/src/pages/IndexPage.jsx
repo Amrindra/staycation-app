@@ -17,7 +17,7 @@ const IndexPage = () => {
   }, []);
 
   return (
-    <article className="grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mt-8 ">
+    <article className="grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-5 mt-8 ">
       {places.length > 0 &&
         places.map((place) => (
           <Link
