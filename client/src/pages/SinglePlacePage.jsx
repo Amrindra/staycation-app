@@ -24,7 +24,7 @@ const SinglePlacePage = () => {
 
   if (showAllPhotos) {
     return (
-      <div className="absolute bg-white inset-0">
+      <div className="absolute bg-white inset-0 min-h-screen">
         <div className="p-8 grid gap-4">
           <div>
             <h3 className="text-3xl">Photos of {places.title}</h3>
@@ -50,10 +50,7 @@ const SinglePlacePage = () => {
           </div>
           {places?.photos?.length > 0 &&
             places.photos.map((photo) => (
-              <div
-                key={photo._id}
-                // className="grid lg:grid-cols-3 md:grid-cols-2"
-              >
+              <div key={photo._id} className="">
                 <img
                   src={`http://localhost:8000/uploads/${photo}`}
                   alt=""
@@ -100,7 +97,7 @@ const SinglePlacePage = () => {
 
       {/* Photos section */}
       <div className="relative">
-        <div className="grid gap-2 grid-cols-[2fr_1fr]">
+        <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl overflow-hidden">
           <div>
             {places.photos?.[0] && (
               <img
@@ -110,7 +107,7 @@ const SinglePlacePage = () => {
               />
             )}
           </div>
-          <div className="grid gap-2">
+          <div className="grid ">
             {places.photos?.[0] && (
               <img
                 src={`http://localhost:8000/uploads/${places.photos[1]}`}
@@ -124,7 +121,7 @@ const SinglePlacePage = () => {
                 <img
                   src={`http://localhost:8000/uploads/${places.photos[2]}`}
                   alt=""
-                  className="object-cover aspect-square w-full relative t-2"
+                  className="object-cover aspect-square w-full relative top-4"
                 />
               )}
             </div>
@@ -152,6 +149,31 @@ const SinglePlacePage = () => {
         </button>
       </div>
       {/* End of photos section */}
+
+      {/* Start of Description sectoin */}
+      <div className="my-4">
+        <h2 className="font-semibold">Description</h2>
+        {places.description}
+      </div>
+      <div className="grid grid-cols-2">
+        <p>
+          Check-In: {places.checkIn}
+          Check-In: {places.checkOut}
+          Max number of guests: {places.maxGuests}
+        </p>
+        <div>
+          <div className="bg-gray-200 rounded-2xl p-4 shadow">
+            <p className="text-2xl text-center">
+              Price: ${places.price} / night
+            </p>
+            <div>
+              <label>Check In: </label>
+              <input type="date" />
+            </div>
+            <button className="primary">Book this place</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
