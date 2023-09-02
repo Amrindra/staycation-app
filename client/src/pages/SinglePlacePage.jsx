@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import BookingWidgets from "../components/BookingWidgets";
 
 const SinglePlacePage = () => {
   const { id } = useParams();
@@ -151,27 +152,19 @@ const SinglePlacePage = () => {
       {/* End of photos section */}
 
       {/* Start of Description sectoin */}
-      <div className="my-4">
-        <h2 className="font-semibold">Description</h2>
-        {places.description}
-      </div>
-      <div className="grid grid-cols-2">
-        <p>
-          Check-In: {places.checkIn}
-          Check-In: {places.checkOut}
-          Max number of guests: {places.maxGuests}
-        </p>
-        <div>
-          <div className="bg-gray-200 rounded-2xl p-4 shadow">
-            <p className="text-2xl text-center">
-              Price: ${places.price} / night
-            </p>
-            <div>
-              <label>Check In: </label>
-              <input type="date" />
-            </div>
-            <button className="primary">Book this place</button>
+      <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] mt-8 gap-4">
+        <div className="flex flex-col">
+          <div className="my-4">
+            <h2 className="font-semibold">Description</h2>
+            {places.description}
           </div>
+          <span> Check-In: {places.checkIn}:00 PM</span>
+          <span> Check-Out: {places.checkOut}:00 AM</span>
+          <span>Max number of guests: {places.maxGuests}</span>
+        </div>
+
+        <div>
+          <BookingWidgets places={places} />
         </div>
       </div>
     </div>
