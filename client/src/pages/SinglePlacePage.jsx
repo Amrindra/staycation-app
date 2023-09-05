@@ -100,17 +100,7 @@ const SinglePlacePage = () => {
 
       {/* Photos section */}
       <div className="relative">
-        <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl overflow-hidden cursor-pointer">
-          <div>
-            {places.photos?.[0] && (
-              <img
-                src={`http://localhost:8000/uploads/${places.photos[0]}`}
-                alt=""
-                className="object-cover aspect-square w-full"
-                onClick={() => setShowAllPhots(true)}
-              />
-            )}
-          </div>
+        <div className="grid gap-2 grid-cols-[1fr_2fr] rounded-2xl overflow-hidden cursor-pointer">
           <div className="grid ">
             {places.photos?.[0] && (
               <img
@@ -131,6 +121,16 @@ const SinglePlacePage = () => {
                 />
               )}
             </div>
+          </div>
+          <div>
+            {places.photos?.[0] && (
+              <img
+                src={`http://localhost:8000/uploads/${places.photos[0]}`}
+                alt=""
+                className="object-cover aspect-square w-full"
+                onClick={() => setShowAllPhots(true)}
+              />
+            )}
           </div>
         </div>
         <button
