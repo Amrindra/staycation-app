@@ -23,12 +23,13 @@ const SinglePlacePage = () => {
 
   console.log(places);
 
+  // If show all photos set to true
   if (showAllPhotos) {
     return (
       <div className="absolute bg-white inset-0 min-h-screen">
         <div className="p-8 grid gap-4">
           <div>
-            <h3 className="text-3xl">Photos of {places.title}</h3>
+            <h3 className="text-3xl mr-36">Photos of {places.title}</h3>
             <button
               onClick={() => setShowAllPhots(false)}
               className="fixed  flex gap-1 p-2 rounded-full bg-[#F5385D] text-white shadow shadow-black"
@@ -56,6 +57,7 @@ const SinglePlacePage = () => {
                   src={`http://localhost:8000/uploads/${photo}`}
                   alt=""
                   // className="w-full object-cover"
+                  onClick={() => setShowAllPhots(true)}
                 />
               </div>
             ))}
@@ -65,7 +67,7 @@ const SinglePlacePage = () => {
   }
 
   return (
-    <div className="mt-8 bg-gray-100 -mx-8 px-8 py-8">
+    <div className="mt-8 bg-gray-100 -mx-8 px-8 pt-8">
       <h1 className="text-2xl">{places.title}</h1>
       <a
         target="_blank"
@@ -98,13 +100,14 @@ const SinglePlacePage = () => {
 
       {/* Photos section */}
       <div className="relative">
-        <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl overflow-hidden">
+        <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl overflow-hidden cursor-pointer">
           <div>
             {places.photos?.[0] && (
               <img
                 src={`http://localhost:8000/uploads/${places.photos[0]}`}
                 alt=""
                 className="object-cover aspect-square w-full"
+                onClick={() => setShowAllPhots(true)}
               />
             )}
           </div>
@@ -114,6 +117,7 @@ const SinglePlacePage = () => {
                 src={`http://localhost:8000/uploads/${places.photos[1]}`}
                 alt=""
                 className="object-cover aspect-square w-full"
+                onClick={() => setShowAllPhots(true)}
               />
             )}
 
@@ -123,6 +127,7 @@ const SinglePlacePage = () => {
                   src={`http://localhost:8000/uploads/${places.photos[2]}`}
                   alt=""
                   className="object-cover aspect-square w-full relative top-4"
+                  onClick={() => setShowAllPhots(true)}
                 />
               )}
             </div>
@@ -152,10 +157,10 @@ const SinglePlacePage = () => {
       {/* End of photos section */}
 
       {/* Start of Description sectoin */}
-      <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] mt-8 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-4 mt-8 mb-8">
         <div className="flex flex-col">
           <div className="my-4">
-            <h2 className="font-semibold">Description</h2>
+            <h2 className="font-semibold text-2xl">Description</h2>
             {places.description}
           </div>
           <span> Check-In: {places.checkIn}:00 PM</span>
@@ -167,6 +172,16 @@ const SinglePlacePage = () => {
           <BookingWidgets places={places} />
         </div>
       </div>
+      {/* End of Description sectiom */}
+
+      {/* Extra info section */}
+      <div className="bg-white px-8 -mx-8 py-8 border border-t">
+        <h3 className="font-semibold text-2xl">Extra Info</h3>
+        <div className="text-sm text-gray-600 leading-4 mb-4 mt-2">
+          {places.extraInfo}
+        </div>
+      </div>
+      {/* End of extra info section */}
     </div>
   );
 };
