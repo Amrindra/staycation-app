@@ -9,6 +9,7 @@ const imageDownloader = require("image-downloader");
 const multer = require("multer");
 const fs = require("fs");
 const PlaceModel = require("./models/Place");
+const BookingModel = require("./models/Booking");
 
 require("dotenv").config();
 
@@ -235,6 +236,27 @@ app.put("/places", async (req, res) => {
       res.json("Ok");
     }
   });
+});
+
+app.post("/bookings", (req, res) => {
+  const { placeId, checkIn, checkOut, numberOfGuests, name, email, phone } =
+    req.body;
+
+  BookingModel.create({
+    placeId,
+    checkIn,
+    checkOut,
+    numberOfGuests,
+    name,
+    email,
+    phone,
+  })
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((error) => {
+      throw error;
+    });
 });
 
 app.post("/logout", (req, res) => {

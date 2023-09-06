@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { differenceInCalendarDays } from "date-fns";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 /* eslint-disable react/prop-types */
 const BookingWidgets = ({ places }) => {
@@ -9,6 +11,8 @@ const BookingWidgets = ({ places }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+
+  const navigate = useNavigate();
 
   // Checking the quantity of staying day
   // the "differenceInCalendarDays" comes from the date-fns libray
@@ -20,7 +24,26 @@ const BookingWidgets = ({ places }) => {
     );
   }
 
-  console.log(numberOfStayingDays);
+  // Get the total of booking price
+  const totalPrice = numberOfStayingDays * places.price;
+
+  // TO handle the booking
+  const handleBooking = async () => {
+    const bookingData = {
+      checkIn,
+      checkOut,
+      numberOfGuests,
+      name,
+      email,
+      phone,
+      placeId: places._id,
+      price: totalPrice,
+    };
+
+    const response = await axios.post("/bookings", bookingData);
+    const bookingId = await response.data._id;
+    navigate(`/account/bookings/${bookingId}`);
+  };
 
   return (
     <>
@@ -58,25 +81,28 @@ const BookingWidgets = ({ places }) => {
           {/* Render only when a user starts checkIn and Checkout date */}
           {numberOfStayingDays > 0 && (
             <div className="py-3 px-4 border-t border-slate-400">
-              <label>Your Full Name:</label>
+              <label>Name:</label>
               <input
                 type="text"
+                placeholder="First Name"
                 onChange={(event) => setName(event.target.value)}
                 value={name}
                 className="border-inherit"
               />
 
-              <label>Your Email:</label>
+              <label>Email:</label>
               <input
                 type="email"
+                placeholder="Email"
                 onChange={(event) => setEmail(event.target.value)}
                 value={email}
                 className="border-inherit"
               />
 
-              <label>Your Phone Number:</label>
+              <label>Phone:</label>
               <input
                 type="tel"
+                placeholder="Phone Number"
                 onChange={(event) => setPhone(event.target.value)}
                 value={phone}
                 className="border-inherit"
@@ -84,11 +110,9 @@ const BookingWidgets = ({ places }) => {
             </div>
           )}
         </div>
-        <button className="primary">
+        <button onClick={handleBooking} className="primary">
           Book this place{" "}
-          {numberOfStayingDays > 0 && (
-            <span>${numberOfStayingDays * places.price}</span>
-          )}
+          {numberOfStayingDays > 0 && <span>${totalPrice}</span>}
         </button>
       </div>
     </>

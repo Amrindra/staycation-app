@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const PlaceSchema = new mongoose.Schema({
   //mongoose.Types.ObjectId represents a unique identifier for a document in a MongoDB database.
-  //   We can add a ref to the User model
+  //We can add a ref to be the reference to the User model
   owner: { type: mongoose.Types.ObjectId, ref: "User" },
   title: String,
   address: String,

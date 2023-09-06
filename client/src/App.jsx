@@ -9,6 +9,8 @@ import UserProfilePage from "./pages/UserProfilePage";
 import PlacesPage from "./pages/PlacesPage";
 import PlacesFormPage from "./pages/PlacesFormPage";
 import SinglePlacePage from "./pages/SinglePlacePage";
+import AllBookingsPage from "./pages/AllBookingsPage";
+import SingleBookingPage from "./pages/SingleBookingPage";
 
 // Config Defaults. You can specify config defaults that will be applied to every request.
 axios.defaults.baseURL = "http://localhost:8000";
@@ -25,6 +27,8 @@ function App() {
         <Route path="/account/places" element={<PlacesPage />} />
         <Route path="/account/places/new" element={<PlacesFormPage />} />
         <Route path="/account/places/:id" element={<PlacesFormPage />} />
+        <Route path="/account/bookings/" element={<AllBookingsPage />} />
+        <Route path="/account/bookings/:id" element={<SingleBookingPage />} />
         <Route path="/place/:id" element={<SinglePlacePage />} />
       </Route>
     </Routes>

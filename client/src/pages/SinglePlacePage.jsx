@@ -157,19 +157,19 @@ const SinglePlacePage = () => {
       {/* End of photos section */}
 
       {/* Start of Description sectoin */}
-      <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-4 mt-8 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-6 mt-8 mb-8">
+        <div>
+          <BookingWidgets places={places} />
+        </div>
+
         <div className="flex flex-col">
-          <div className="my-4">
+          <div className="">
             <h2 className="font-semibold text-2xl">Description</h2>
-            {places.description}
+            <p className="mb-6">{places.description}</p>
           </div>
           <span> Check-In: {places.checkIn}:00 PM</span>
           <span> Check-Out: {places.checkOut}:00 AM</span>
           <span>Max number of guests: {places.maxGuests}</span>
-        </div>
-
-        <div>
-          <BookingWidgets places={places} />
         </div>
       </div>
       {/* End of Description sectiom */}
