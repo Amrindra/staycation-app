@@ -6,6 +6,9 @@ const BookingWidgets = ({ places }) => {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   // Checking the quantity of staying day
   // the "differenceInCalendarDays" comes from the date-fns libray
@@ -51,6 +54,35 @@ const BookingWidgets = ({ places }) => {
               className="border-inherit"
             />
           </div>
+
+          {/* Render only when a user starts checkIn and Checkout date */}
+          {numberOfStayingDays > 0 && (
+            <div className="py-3 px-4 border-t border-slate-400">
+              <label>Your Full Name:</label>
+              <input
+                type="text"
+                onChange={(event) => setName(event.target.value)}
+                value={name}
+                className="border-inherit"
+              />
+
+              <label>Your Email:</label>
+              <input
+                type="email"
+                onChange={(event) => setEmail(event.target.value)}
+                value={email}
+                className="border-inherit"
+              />
+
+              <label>Your Phone Number:</label>
+              <input
+                type="tel"
+                onChange={(event) => setPhone(event.target.value)}
+                value={phone}
+                className="border-inherit"
+              />
+            </div>
+          )}
         </div>
         <button className="primary">
           Book this place{" "}
