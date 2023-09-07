@@ -46,7 +46,7 @@ const BookingWidgets = ({ places }) => {
       name,
       email,
       phone,
-      placeId: places._id,
+      place: places._id,
       price: totalPrice,
     };
 

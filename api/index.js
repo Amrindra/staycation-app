@@ -255,18 +255,28 @@ app.put("/places", async (req, res) => {
 
 app.post("/bookings", async (req, res) => {
   const userData = await getUserDataFromReq(req);
-  const { placeId, checkIn, checkOut, numberOfGuests, name, email, phone } =
-    req.body;
-
-  BookingModel.create({
-    user: userData.id,
-    placeId,
+  const {
+    place,
     checkIn,
     checkOut,
     numberOfGuests,
     name,
     email,
     phone,
+    price,
+  } = req.body;
+
+  // id is from the login Token that is assigned by the jwt
+  BookingModel.create({
+    user: userData.id,
+    place,
+    checkIn,
+    checkOut,
+    numberOfGuests,
+    name,
+    email,
+    phone,
+    price,
   })
     .then((doc) => {
       res.json(doc);
@@ -278,7 +288,8 @@ app.post("/bookings", async (req, res) => {
 
 app.get("/bookings", async (req, res) => {
   const userData = await getUserDataFromReq(req);
-  res.json(await BookingModel.find({ user: userData.id }).populate("placeId"));
+  res.json(await BookingModel.find({ user: userData.id }).populate("place"));
+  // "populate" is a method and a concept used to retrieve referenced documents from other collections in MongoDB when you query a document. It's particularly useful when you have relationships between different types of data stored in separate collections and you want to fetch related data in a single query.
 });
 
 app.post("/logout", (req, res) => {
