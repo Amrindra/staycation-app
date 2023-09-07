@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { differenceInCalendarDays } from "date-fns";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 /* eslint-disable react/prop-types */
 const BookingWidgets = ({ places }) => {
@@ -11,8 +12,17 @@ const BookingWidgets = ({ places }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const { user } = useContext(UserContext);
 
   const navigate = useNavigate();
+
+  // This useEffect is use to autoFill the booking form from the user account
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setEmail(user.email);
+    }
+  }, [user]);
 
   // Checking the quantity of staying day
   // the "differenceInCalendarDays" comes from the date-fns libray

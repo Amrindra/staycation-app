@@ -2,14 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
-const UserModel = require("./models/User");
+const UserModel = require("./models/UserModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
 const fs = require("fs");
-const PlaceModel = require("./models/Place");
-const BookingModel = require("./models/Booking");
+const PlaceModel = require("./models/PlaceModel");
+const BookingModel = require("./models/BookingModel");
 
 require("dotenv").config();
 
@@ -28,6 +28,21 @@ app.use(
 );
 
 mongoose.connect(process.env.MONGO_URL);
+
+// This function is used to get the token and to be reusable
+function getUserDataFromReq(req) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(
+      req.cookies.token,
+      process.env.JWT_SECRET_KEY,
+      {},
+      async (err, userData) => {
+        if (err) throw err;
+        resolve(userData);
+      }
+    );
+  });
+}
 
 app.get("/test", (req, res) => {
   res.json("Testing ok");
@@ -238,11 +253,13 @@ app.put("/places", async (req, res) => {
   });
 });
 
-app.post("/bookings", (req, res) => {
+app.post("/bookings", async (req, res) => {
+  const userData = await getUserDataFromReq(req);
   const { placeId, checkIn, checkOut, numberOfGuests, name, email, phone } =
     req.body;
 
   BookingModel.create({
+    user: userData.id,
     placeId,
     checkIn,
     checkOut,
@@ -257,6 +274,11 @@ app.post("/bookings", (req, res) => {
     .catch((error) => {
       throw error;
     });
+});
+
+app.get("/bookings", async (req, res) => {
+  const userData = await getUserDataFromReq(req);
+  res.json(await BookingModel.find({ user: userData.id }).populate("placeId"));
 });
 
 app.post("/logout", (req, res) => {
