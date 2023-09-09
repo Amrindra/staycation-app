@@ -10,6 +10,7 @@ const multer = require("multer");
 const fs = require("fs");
 const PlaceModel = require("./models/PlaceModel");
 const BookingModel = require("./models/BookingModel");
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
 require("dotenv").config();
 
@@ -19,6 +20,8 @@ app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
 const bcryptSalt = bcrypt.genSaltSync(10);
+
+// const bucket = "staycation-booking-app";
 
 app.use(
   cors({
@@ -42,6 +45,32 @@ function getUserDataFromReq(req) {
       }
     );
   });
+}
+
+// For uploading images to the S3 AWS cloud platform
+async function uploadImagesToS3(path, originalFilename, mimetype) {
+  const client = new S3Client({
+    region: "us-east-1",
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY,
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    },
+  });
+
+  const splitOrginalname = originalFilename.split(".");
+  const onlyExtension = splitOrginalname[splitOrginalname.length - 1];
+  const newFilename = Date.now() + "." + onlyExtension;
+
+  await client.send(
+    new PutObjectCommand({
+      Bucket: "staycation-booking-app",
+      Body: fs.readFileSync(path),
+      Key: newFilename,
+      ContentType: mimetype,
+      ACL: "public-read",
+    })
+  );
+  return `https://staycation-booking-app.s3.amazonaws.com/${newFilename}`;
 }
 
 app.get("/test", (req, res) => {
@@ -126,21 +155,14 @@ app.post("/upload-by-link", async (req, res) => {
 
 // Using Multer library for uploading images from local computer
 // This is where we will upload our file to
-const photoMiddleWare = multer({ dest: "uploads/" });
-app.post("/upload", photoMiddleWare.array("images", 50), (req, res) => {
+const photoMiddleWare = multer({ dest: "/tmp" });
+app.post("/upload", photoMiddleWare.array("images", 50), async (req, res) => {
   const uploadFiles = [];
 
   for (let i in req.files) {
-    const { path, originalname } = req.files[i];
-    const splitOrginalname = originalname.split(".");
-    const onlyOriginalnameExtension =
-      splitOrginalname[splitOrginalname.length - 1];
-
-    // Combinning the old path with originalname extension
-    const newPath = path + "." + onlyOriginalnameExtension;
-    // Using fs to rename the path name. path is an old path and newPath is the new path name
-    fs.renameSync(path, newPath);
-    uploadFiles.push(newPath.replace("uploads/", ""));
+    const { path, originalname, mimetype } = req.files[i];
+    const url = await uploadImagesToS3(path, originalname, mimetype);
+    uploadFiles.push(url);
   }
   res.json(uploadFiles);
   // THE SAMEPLE OF THE originalname.

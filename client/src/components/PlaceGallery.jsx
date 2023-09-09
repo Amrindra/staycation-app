@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import Image from "./Image";
 
 const PlaceGallery = ({ places }) => {
   const [showAllPhotos, setShowAllPhots] = useState(false);
@@ -34,8 +35,8 @@ const PlaceGallery = ({ places }) => {
           {places?.photos?.length > 0 &&
             places.photos.map((photo) => (
               <div key={photo._id} className="">
-                <img
-                  src={`http://localhost:8000/uploads/${photo}`}
+                <Image
+                  src={photo}
                   alt=""
                   // className="w-full object-cover"
                   onClick={() => setShowAllPhots(true)}
@@ -51,8 +52,8 @@ const PlaceGallery = ({ places }) => {
       <div className="grid gap-2 grid-cols-[1fr_2fr] rounded-2xl overflow-hidden cursor-pointer">
         <div className="grid ">
           {places.photos?.[0] && (
-            <img
-              src={`http://localhost:8000/uploads/${places.photos[1]}`}
+            <Image
+              src={places.photos[1]}
               alt=""
               className="object-cover aspect-square w-full"
               onClick={() => setShowAllPhots(true)}
@@ -61,8 +62,8 @@ const PlaceGallery = ({ places }) => {
 
           <div className="overflow-hidden">
             {places.photos?.[0] && (
-              <img
-                src={`http://localhost:8000/uploads/${places.photos[2]}`}
+              <Image
+                src={places.photos[2]}
                 alt=""
                 className="object-cover aspect-square w-full relative top-4"
                 onClick={() => setShowAllPhots(true)}
@@ -73,7 +74,7 @@ const PlaceGallery = ({ places }) => {
         <div>
           {places.photos?.[0] && (
             <img
-              src={`http://localhost:8000/uploads/${places.photos[0]}`}
+              src={places.photos[0]}
               alt=""
               className="object-cover aspect-square w-full"
               onClick={() => setShowAllPhots(true)}
