@@ -76,7 +76,7 @@ async function uploadImagesToS3(path, originalFilename, mimetype) {
 //   res.json("Testing ok");
 // });
 
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
 
   // This coming from the register form client side
@@ -94,7 +94,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
 
   const { email, password } = req.body;
@@ -128,7 +128,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/profile", (req, res) => {
+app.get("/api/profile", (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   // Grab cookie token from a user when login by using req.cookies
   const { token } = req.cookies;
@@ -146,7 +146,7 @@ app.get("/profile", (req, res) => {
   }
 });
 
-app.post("/upload-by-link", async (req, res) => {
+app.post("/api/upload-by-link", async (req, res) => {
   const { link } = req.body;
   const newName = "photo" + Date.now() + ".jpg";
   await imageDownloader.image({
@@ -164,19 +164,22 @@ app.post("/upload-by-link", async (req, res) => {
 // Using Multer library for uploading images from local computer
 // This is where we will upload our file to
 const photoMiddleWare = multer({ dest: "/tmp" });
-app.post("/upload", photoMiddleWare.array("images", 50), async (req, res) => {
-  mongoose.connect(process.env.MONGO_URL);
+app.post(
+  "/api/upload",
+  photoMiddleWare.array("images", 50),
+  async (req, res) => {
+    mongoose.connect(process.env.MONGO_URL);
 
-  const uploadFiles = [];
+    const uploadFiles = [];
 
-  for (let i in req.files) {
-    const { path, originalname, mimetype } = req.files[i];
-    const url = await uploadImagesToS3(path, originalname, mimetype);
-    uploadFiles.push(url);
-  }
-  res.json(uploadFiles);
-  // THE SAMEPLE OF THE originalname.
-  /*{
+    for (let i in req.files) {
+      const { path, originalname, mimetype } = req.files[i];
+      const url = await uploadImagesToS3(path, originalname, mimetype);
+      uploadFiles.push(url);
+    }
+    res.json(uploadFiles);
+    // THE SAMEPLE OF THE originalname.
+    /*{
   fieldname: 'images',
   originalname: 'photo1693233892848.jpg',
   encoding: '7bit',
@@ -186,10 +189,11 @@ app.post("/upload", photoMiddleWare.array("images", 50), async (req, res) => {
   path: 'uploads/aa51456b18b6b77db2432c3ad1528fc0',
   size: 38401
 }*/
-});
+  }
+);
 
 // Post request for places
-app.post("/places", (req, res) => {
+app.post("/api/places", (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
 
   const { token } = req.cookies;
@@ -226,7 +230,7 @@ app.post("/places", (req, res) => {
 });
 
 // Get request for Places endpoint for a particular user
-app.get("/user-places", (req, res) => {
+app.get("/api/user-places", (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
 
   const { token } = req.cookies;
@@ -239,13 +243,13 @@ app.get("/user-places", (req, res) => {
 });
 
 // Get request for all user
-app.get("/places", async (req, res) => {
+app.get("/api/places", async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   [res.json(await PlaceModel.find())];
 });
 
 // Get places by ID
-app.get("/places/:id", async (req, res) => {
+app.get("/api/places/:id", async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
 
   const { id } = req.params;
@@ -254,7 +258,7 @@ app.get("/places/:id", async (req, res) => {
 });
 
 // Update places
-app.put("/places", async (req, res) => {
+app.put("/api/places", async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
 
   const { token } = req.cookies;
@@ -296,7 +300,7 @@ app.put("/places", async (req, res) => {
   });
 });
 
-app.post("/bookings", async (req, res) => {
+app.post("/api/bookings", async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
 
   const userData = await getUserDataFromReq(req);
@@ -331,7 +335,7 @@ app.post("/bookings", async (req, res) => {
     });
 });
 
-app.get("/bookings", async (req, res) => {
+app.get("/api/bookings", async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
 
   const userData = await getUserDataFromReq(req);
@@ -339,7 +343,7 @@ app.get("/bookings", async (req, res) => {
   // "populate" is a method and a concept used to retrieve referenced documents from other collections in MongoDB when you query a document. It's particularly useful when you have relationships between different types of data stored in separate collections and you want to fetch related data in a single query.
 });
 
-app.post("/logout", (req, res) => {
+app.post("/api/logout", (req, res) => {
   res.cookie("token", "").json(true);
 });
 
