@@ -73,7 +73,7 @@ const PlaceGallery = ({ places }) => {
         </div>
         <div>
           {places.photos?.[0] && (
-            <img
+            <Image
               src={places.photos[0]}
               alt=""
               className="object-cover aspect-square w-full"

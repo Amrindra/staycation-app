@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
 import { useState } from "react";
+import Image from "./Image";
 
 const ImageUploader = ({ photos, setPhotos }) => {
   const [photoByLink, setByPhotoLink] = useState([]);
@@ -90,8 +91,8 @@ const ImageUploader = ({ photos, setPhotos }) => {
         {photos.length > 0 &&
           photos.map((link) => (
             <div key={link} className="relative h-32 flex">
-              <img
-                src={"http://localhost:8000/uploads/" + link}
+              <Image
+                src={link}
                 alt="photo upload"
                 className="w-full object-cover rounded-2xl"
               />

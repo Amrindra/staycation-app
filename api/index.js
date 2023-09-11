@@ -30,8 +30,6 @@ app.use(
   })
 );
 
-mongoose.connect(process.env.MONGO_URL);
-
 // This function is used to get the token and to be reusable
 function getUserDataFromReq(req) {
   return new Promise((resolve, reject) => {
@@ -50,7 +48,7 @@ function getUserDataFromReq(req) {
 // For uploading images to the S3 AWS cloud platform
 async function uploadImagesToS3(path, originalFilename, mimetype) {
   const client = new S3Client({
-    region: "us-east-1",
+    region: "us-east-2",
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY,
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
@@ -73,11 +71,13 @@ async function uploadImagesToS3(path, originalFilename, mimetype) {
   return `https://staycation-booking-app.s3.amazonaws.com/${newFilename}`;
 }
 
-app.get("/test", (req, res) => {
-  res.json("Testing ok");
-});
+// app.get("/test", (req, res) => {
+//   res.json("Testing ok");
+// });
 
 app.post("/register", async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   // This coming from the register form client side
   const { name, email, password } = req.body;
 
@@ -94,6 +94,8 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   const { email, password } = req.body;
 
   const existingUser = await UserModel.findOne({ email });
@@ -126,6 +128,7 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/profile", (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
   // Grab cookie token from a user when login by using req.cookies
   const { token } = req.cookies;
 
@@ -143,20 +146,24 @@ app.get("/profile", (req, res) => {
 });
 
 app.post("/upload-by-link", async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   const { link } = req.body;
   const newName = "photo" + Date.now() + ".jpg";
   await imageDownloader.image({
     url: link,
-    dest: __dirname + "/uploads/" + newName,
+    dest: "/tmp/" + newName,
   });
-
-  res.json(newName);
+  const url = await uploadImagesToS3("/tmp/" + newName, newName);
+  res.json(url);
 });
 
 // Using Multer library for uploading images from local computer
 // This is where we will upload our file to
 const photoMiddleWare = multer({ dest: "/tmp" });
 app.post("/upload", photoMiddleWare.array("images", 50), async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   const uploadFiles = [];
 
   for (let i in req.files) {
@@ -180,6 +187,8 @@ app.post("/upload", photoMiddleWare.array("images", 50), async (req, res) => {
 
 // Post request for places
 app.post("/places", (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   const { token } = req.cookies;
   const {
     title,
@@ -215,6 +224,8 @@ app.post("/places", (req, res) => {
 
 // Get request for Places endpoint for a particular user
 app.get("/user-places", (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   const { token } = req.cookies;
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, {}, async (error, userData) => {
@@ -225,10 +236,15 @@ app.get("/user-places", (req, res) => {
 });
 
 // Get request for all user
-app.get("/places", async (req, res) => [res.json(await PlaceModel.find())]);
+app.get("/places", async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  [res.json(await PlaceModel.find())];
+});
 
 // Get places by ID
 app.get("/places/:id", async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   const { id } = req.params;
 
   res.json(await PlaceModel.findById(id));
@@ -236,6 +252,8 @@ app.get("/places/:id", async (req, res) => {
 
 // Update places
 app.put("/places", async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   const { token } = req.cookies;
   const {
     id,
@@ -276,6 +294,8 @@ app.put("/places", async (req, res) => {
 });
 
 app.post("/bookings", async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   const userData = await getUserDataFromReq(req);
   const {
     place,
@@ -309,6 +329,8 @@ app.post("/bookings", async (req, res) => {
 });
 
 app.get("/bookings", async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+
   const userData = await getUserDataFromReq(req);
   res.json(await BookingModel.find({ user: userData.id }).populate("place"));
   // "populate" is a method and a concept used to retrieve referenced documents from other collections in MongoDB when you query a document. It's particularly useful when you have relationships between different types of data stored in separate collections and you want to fetch related data in a single query.
