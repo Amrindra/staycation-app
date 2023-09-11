@@ -11,6 +11,7 @@ const fs = require("fs");
 const PlaceModel = require("./models/PlaceModel");
 const BookingModel = require("./models/BookingModel");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const mime = require("mime-types");
 
 require("dotenv").config();
 
@@ -154,7 +155,11 @@ app.post("/upload-by-link", async (req, res) => {
     url: link,
     dest: "/tmp/" + newName,
   });
-  const url = await uploadImagesToS3("/tmp/" + newName, newName);
+  const url = await uploadImagesToS3(
+    "/tmp/" + newName,
+    newName,
+    mime.lookup("/tmp/" + newName)
+  );
   res.json(url);
 });
 
