@@ -147,8 +147,6 @@ app.get("/profile", (req, res) => {
 });
 
 app.post("/upload-by-link", async (req, res) => {
-  mongoose.connect(process.env.MONGO_URL);
-
   const { link } = req.body;
   const newName = "photo" + Date.now() + ".jpg";
   await imageDownloader.image({
