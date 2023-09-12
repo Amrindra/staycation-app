@@ -92,7 +92,7 @@ const PlacesForm = () => {
       <ProfileNavigation />
 
       <form onSubmit={handleSubmit}>
-        {inputInfo("Title", "Title for your place.")}
+        {inputInfo("Title", "Add title for your place.")}
         <input
           type="text"
           name="title"
@@ -101,7 +101,7 @@ const PlacesForm = () => {
           onChange={(event) => setTitle(event.target.value)}
         />
 
-        {inputInfo("Address", "Address to this place")}
+        {inputInfo("Address", "Address to your place.")}
         <input
           type="text"
           name="address"
@@ -145,7 +145,7 @@ const PlacesForm = () => {
             <h3 className="mt-2 -mb-1">Check out time</h3>
             <input
               type="text"
-              placeholder="12 AM"
+              placeholder="12 PM"
               value={checkOut}
               onChange={(event) => setCheckOut(event.target.value)}
             />
