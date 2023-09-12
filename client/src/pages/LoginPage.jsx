@@ -36,7 +36,8 @@ function LoginPage() {
     <div className="mt-4 grow flex items-center justify-around">
       <div className="mb-64">
         <h1 className="text-4xl text-center mb-4">Login</h1>
-
+        <pre>Login Demo: email: test@test.com, password: 12345</pre>
+        <pre>Or you can create a fake account to test it out.</pre>
         <form className="max-w-md mx-auto" onSubmit={handleLogin}>
           <input
             type="email"

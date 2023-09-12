@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import BookingWidgets from "../components/BookingWidgets";
 import PlaceGallery from "../components/PlaceGallery";
 import AddressLink from "../components/AddressLink";
+import PuffLoader from "react-spinners/ClipLoader";
 
 const SinglePlacePage = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const SinglePlacePage = () => {
   }, [id]);
 
   if (!places) {
-    return "Loading";
+    return <PuffLoader color="#5C5470" />;
   }
 
   return (

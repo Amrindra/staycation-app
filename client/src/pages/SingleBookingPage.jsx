@@ -24,6 +24,7 @@ const SingleBookingPage = () => {
   if (!booking) {
     return "";
   }
+
   return (
     <div className="my-8">
       <h1 className="text-3xl">{booking.place.title}</h1>

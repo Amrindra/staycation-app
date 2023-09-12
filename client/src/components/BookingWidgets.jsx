@@ -50,9 +50,13 @@ const BookingWidgets = ({ places }) => {
       price: totalPrice,
     };
 
-    const response = await axios.post("/bookings", bookingData);
-    const bookingId = await response.data._id;
-    navigate(`/account/bookings/${bookingId}`);
+    if (!user) {
+      navigate("/login");
+    } else {
+      const response = await axios.post("/bookings", bookingData);
+      const bookingId = await response.data._id;
+      navigate(`/account/bookings/${bookingId}`);
+    }
   };
 
   return (
@@ -120,6 +124,7 @@ const BookingWidgets = ({ places }) => {
             </div>
           )}
         </div>
+
         <button onClick={handleBooking} className="primary">
           Book this place{" "}
           {numberOfStayingDays > 0 && <span>${totalPrice}</span>}

@@ -4,6 +4,7 @@ import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import PlacesPage from "./PlacesPage";
 import ProfileNavigation from "../components/ProfileNavigation";
+import PuffLoader from "react-spinners/ClipLoader";
 
 const UserProfilePage = () => {
   const [redirectToHomepage, setRedirectToHomepage] = useState(null);
@@ -24,7 +25,7 @@ const UserProfilePage = () => {
 
   // Checking if there is no user yet, render this loading...
   if (!loading) {
-    return <span>Loading...</span>;
+    return <PuffLoader color="#5C5470" />;
   }
 
   // Checking if there is no user, profile page it should not be visible, it should navigate to login page
@@ -41,7 +42,10 @@ const UserProfilePage = () => {
       <ProfileNavigation />
       {subpage === "profile" && (
         <div className="text-center max-w-lg mx-auto">
-          Logged in as {user.name} ({user.email})
+          <p>
+            Logged in as <span className="capitalize text-xl">{user.name}</span>
+          </p>
+          <p>Email: {user.email}</p>
           <button onClick={logout} className="primary max-w-sm mt-2">
             Logout
           </button>
