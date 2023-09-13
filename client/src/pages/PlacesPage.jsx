@@ -34,7 +34,7 @@ const PlacesPage = () => {
               clipRule="evenodd"
             />
           </svg>
-          Add new place
+          Create your new places
         </Link>
       </div>
 

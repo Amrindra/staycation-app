@@ -28,12 +28,7 @@ function Header() {
       {/*End of Header Logo Section */}
 
       {/* Header Middle Section */}
-      <div className="flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300 w-90">
-        {/* <div>Anywhere</div>
-        <div className="border-l border-gray-300"></div>
-        <div>Any week</div>
-        <div className="border-l border-gray-300"></div>
-        <div>Add guests</div> */}
+      <div className="flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300 w-90 hidden sm:block">
         <input
           type="search"
           placeholder="Search for places"
