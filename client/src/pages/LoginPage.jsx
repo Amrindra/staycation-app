@@ -33,11 +33,18 @@ function LoginPage() {
   }
 
   return (
-    <div className="mt-4 grow flex items-center justify-around">
-      <div className="mb-64">
+    <div className="mt-4 grow flex items-center justify-around ">
+      <div className="mb-64 w-full">
         <h1 className="text-4xl text-center mb-4">Login</h1>
-        <pre>Login Demo: email: test@test.com, password: 12345</pre>
-        <pre>Or you can create a fake account to test it out.</pre>
+        <div className="text-center">
+          <p className="text-sm  text-yellow-600">
+            Login Demo email: test@test.com, password: 12345
+          </p>
+          <p className="text-sm text-yellow-600 ">
+            Or you can create a fake account to test it out.
+          </p>
+        </div>
+
         <form className="max-w-md mx-auto" onSubmit={handleLogin}>
           <input
             type="email"

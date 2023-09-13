@@ -69,7 +69,7 @@ const ImageUploader = ({ photos, setPhotos }) => {
         <input
           type="text"
           name="photoLink"
-          placeholder="jpg, png...."
+          placeholder="Upload by link as jpg or png...."
           value={photoByLink}
           onChange={(event) => setByPhotoLink(event.target.value)}
         />
